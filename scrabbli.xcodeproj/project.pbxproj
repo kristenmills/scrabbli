@@ -1,0 +1,404 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7B33F3DB1652068200CC406C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B33F3DA1652068200CC406C /* Cocoa.framework */; };
+		7B33F3DD1652068200CC406C /* MacRuby.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B33F3DC1652068200CC406C /* MacRuby.framework */; };
+		7B33F3E61652068200CC406C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F3E41652068200CC406C /* InfoPlist.strings */; };
+		7B33F3E81652068200CC406C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B33F3E71652068200CC406C /* main.m */; };
+		7B33F3ED1652068200CC406C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F3EB1652068200CC406C /* MainMenu.xib */; };
+		7B33F3F01652068200CC406C /* rb_main.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F3EF1652068200CC406C /* rb_main.rb */; };
+		7B33F3F21652068200CC406C /* AppDelegate.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F3F11652068200CC406C /* AppDelegate.rb */; };
+		7B33F4111652094700CC406C /* board.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F40C1652094700CC406C /* board.rb */; };
+		7B33F4121652094700CC406C /* board_square.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F40D1652094700CC406C /* board_square.rb */; };
+		7B33F4131652094700CC406C /* game.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F40E1652094700CC406C /* game.rb */; };
+		7B33F4141652094700CC406C /* player.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F40F1652094700CC406C /* player.rb */; };
+		7B33F4151652094700CC406C /* tile.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F4101652094700CC406C /* tile.rb */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7B33F3DF1652068200CC406C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B33F3CD1652068200CC406C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B33F3D51652068200CC406C;
+			remoteInfo = scrabbli;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7B33F3D61652068200CC406C /* scrabbli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scrabbli.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B33F3DA1652068200CC406C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		7B33F3DC1652068200CC406C /* MacRuby.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacRuby.framework; path = Library/Frameworks/MacRuby.framework; sourceTree = DEVELOPER_DIR; };
+		7B33F3E31652068200CC406C /* scrabbli-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "scrabbli-Info.plist"; sourceTree = "<group>"; };
+		7B33F3E51652068200CC406C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7B33F3E71652068200CC406C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7B33F3E91652068200CC406C /* scrabbli-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "scrabbli-Prefix.pch"; sourceTree = "<group>"; };
+		7B33F3EC1652068200CC406C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		7B33F3EF1652068200CC406C /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
+		7B33F3F11652068200CC406C /* AppDelegate.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = AppDelegate.rb; sourceTree = "<group>"; };
+		7B33F40C1652094700CC406C /* board.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = board.rb; path = models/board.rb; sourceTree = "<group>"; };
+		7B33F40D1652094700CC406C /* board_square.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = board_square.rb; path = models/board_square.rb; sourceTree = "<group>"; };
+		7B33F40E1652094700CC406C /* game.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = game.rb; path = models/game.rb; sourceTree = "<group>"; };
+		7B33F40F1652094700CC406C /* player.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = player.rb; path = models/player.rb; sourceTree = "<group>"; };
+		7B33F4101652094700CC406C /* tile.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = tile.rb; path = models/tile.rb; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7B33F3D31652068200CC406C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B33F3DB1652068200CC406C /* Cocoa.framework in Frameworks */,
+				7B33F3DD1652068200CC406C /* MacRuby.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7B33F3CB1652068200CC406C = {
+			isa = PBXGroup;
+			children = (
+				7B33F3E11652068200CC406C /* scrabbli */,
+				7B33F3D91652068200CC406C /* Frameworks */,
+				7B33F3D71652068200CC406C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7B33F3D71652068200CC406C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F3D61652068200CC406C /* scrabbli.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7B33F3D91652068200CC406C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F3DA1652068200CC406C /* Cocoa.framework */,
+				7B33F3DC1652068200CC406C /* MacRuby.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7B33F3E11652068200CC406C /* scrabbli */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F40A1652093800CC406C /* Controllers */,
+				7B33F4081652093100CC406C /* Models */,
+				7B33F3F11652068200CC406C /* AppDelegate.rb */,
+				7B33F3EA1652068200CC406C /* Resources */,
+				7B33F3EE1652068200CC406C /* Other Sources */,
+				7B33F3E21652068200CC406C /* Supporting Files */,
+			);
+			path = scrabbli;
+			sourceTree = "<group>";
+		};
+		7B33F3E21652068200CC406C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F3E31652068200CC406C /* scrabbli-Info.plist */,
+				7B33F3E41652068200CC406C /* InfoPlist.strings */,
+				7B33F3E71652068200CC406C /* main.m */,
+				7B33F3E91652068200CC406C /* scrabbli-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7B33F3EA1652068200CC406C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F3EB1652068200CC406C /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7B33F3EE1652068200CC406C /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F3EF1652068200CC406C /* rb_main.rb */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		7B33F4081652093100CC406C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F40C1652094700CC406C /* board.rb */,
+				7B33F40D1652094700CC406C /* board_square.rb */,
+				7B33F40E1652094700CC406C /* game.rb */,
+				7B33F40F1652094700CC406C /* player.rb */,
+				7B33F4101652094700CC406C /* tile.rb */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		7B33F40A1652093800CC406C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		7B33F3DE1652068200CC406C /* Deployment */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "--compile --embed";
+			buildConfigurationList = 7B33F3F81652068200CC406C /* Build configuration list for PBXLegacyTarget "Deployment" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/local/bin/macruby_deploy;
+			dependencies = (
+				7B33F3E01652068200CC406C /* PBXTargetDependency */,
+			);
+			name = Deployment;
+			passBuildSettingsInEnvironment = 1;
+			productName = Deployment;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		7B33F3D51652068200CC406C /* scrabbli */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B33F3F51652068200CC406C /* Build configuration list for PBXNativeTarget "scrabbli" */;
+			buildPhases = (
+				7B33F3D21652068200CC406C /* Sources */,
+				7B33F3D31652068200CC406C /* Frameworks */,
+				7B33F3D41652068200CC406C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = scrabbli;
+			productName = scrabbli;
+			productReference = 7B33F3D61652068200CC406C /* scrabbli.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7B33F3CD1652068200CC406C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Kristen Mills";
+			};
+			buildConfigurationList = 7B33F3D01652068200CC406C /* Build configuration list for PBXProject "scrabbli" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7B33F3CB1652068200CC406C;
+			productRefGroup = 7B33F3D71652068200CC406C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7B33F3D51652068200CC406C /* scrabbli */,
+				7B33F3DE1652068200CC406C /* Deployment */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7B33F3D41652068200CC406C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B33F3E61652068200CC406C /* InfoPlist.strings in Resources */,
+				7B33F3ED1652068200CC406C /* MainMenu.xib in Resources */,
+				7B33F3F01652068200CC406C /* rb_main.rb in Resources */,
+				7B33F3F21652068200CC406C /* AppDelegate.rb in Resources */,
+				7B33F4111652094700CC406C /* board.rb in Resources */,
+				7B33F4121652094700CC406C /* board_square.rb in Resources */,
+				7B33F4131652094700CC406C /* game.rb in Resources */,
+				7B33F4141652094700CC406C /* player.rb in Resources */,
+				7B33F4151652094700CC406C /* tile.rb in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7B33F3D21652068200CC406C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B33F3E81652068200CC406C /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7B33F3E01652068200CC406C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B33F3D51652068200CC406C /* scrabbli */;
+			targetProxy = 7B33F3DF1652068200CC406C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7B33F3E41652068200CC406C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B33F3E51652068200CC406C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		7B33F3EB1652068200CC406C /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B33F3EC1652068200CC406C /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7B33F3F31652068200CC406C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		7B33F3F41652068200CC406C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		7B33F3F61652068200CC406C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					/Library/Frameworks,
+				);
+				GCC_ENABLE_OBJC_GC = required;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "scrabbli/scrabbli-Prefix.pch";
+				INFOPLIST_FILE = "scrabbli/scrabbli-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		7B33F3F71652068200CC406C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					/Library/Frameworks,
+				);
+				GCC_ENABLE_OBJC_GC = required;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "scrabbli/scrabbli-Prefix.pch";
+				INFOPLIST_FILE = "scrabbli/scrabbli-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		7B33F3F91652068200CC406C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		7B33F3FA1652068200CC406C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7B33F3D01652068200CC406C /* Build configuration list for PBXProject "scrabbli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B33F3F31652068200CC406C /* Debug */,
+				7B33F3F41652068200CC406C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B33F3F51652068200CC406C /* Build configuration list for PBXNativeTarget "scrabbli" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B33F3F61652068200CC406C /* Debug */,
+				7B33F3F71652068200CC406C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B33F3F81652068200CC406C /* Build configuration list for PBXLegacyTarget "Deployment" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B33F3F91652068200CC406C /* Debug */,
+				7B33F3FA1652068200CC406C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7B33F3CD1652068200CC406C /* Project object */;
+}
