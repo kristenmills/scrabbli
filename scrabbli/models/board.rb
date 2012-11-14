@@ -1,7 +1,7 @@
 
 module Scrabble
 
-	class Board
+	class Board 
 	end
 
 end
