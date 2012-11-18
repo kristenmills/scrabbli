@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B243D4316594BE100B1357D /* constants.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B243D4216594BE100B1357D /* constants.rb */; };
+		7B243D481659510700B1357D /* scrabbli.rb in Resources */ = {isa = PBXBuildFile; fileRef = 7B243D471659510700B1357D /* scrabbli.rb */; };
 		7B33F3DB1652068200CC406C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B33F3DA1652068200CC406C /* Cocoa.framework */; };
 		7B33F3DD1652068200CC406C /* MacRuby.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B33F3DC1652068200CC406C /* MacRuby.framework */; };
 		7B33F3E61652068200CC406C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7B33F3E41652068200CC406C /* InfoPlist.strings */; };
@@ -32,6 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B243D4216594BE100B1357D /* constants.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = constants.rb; sourceTree = "<group>"; };
+		7B243D471659510700B1357D /* scrabbli.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = scrabbli.rb; sourceTree = "<group>"; };
 		7B33F3D61652068200CC406C /* scrabbli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scrabbli.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B33F3DA1652068200CC406C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		7B33F3DC1652068200CC406C /* MacRuby.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacRuby.framework; path = Library/Frameworks/MacRuby.framework; sourceTree = DEVELOPER_DIR; };
@@ -62,6 +66,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B243D4516594E3300B1357D /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				7B33F3F11652068200CC406C /* AppDelegate.rb */,
+				7B243D4616594E6E00B1357D /* Helpers */,
+				7B33F40A1652093800CC406C /* Controllers */,
+				7B33F4081652093100CC406C /* Models */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		7B243D4616594E6E00B1357D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7B243D4216594BE100B1357D /* constants.rb */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		7B33F3CB1652068200CC406C = {
 			isa = PBXGroup;
 			children = (
@@ -91,9 +114,7 @@
 		7B33F3E11652068200CC406C /* scrabbli */ = {
 			isa = PBXGroup;
 			children = (
-				7B33F40A1652093800CC406C /* Controllers */,
-				7B33F4081652093100CC406C /* Models */,
-				7B33F3F11652068200CC406C /* AppDelegate.rb */,
+				7B243D4516594E3300B1357D /* Classes */,
 				7B33F3EA1652068200CC406C /* Resources */,
 				7B33F3EE1652068200CC406C /* Other Sources */,
 				7B33F3E21652068200CC406C /* Supporting Files */,
@@ -123,6 +144,7 @@
 		7B33F3EE1652068200CC406C /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				7B243D471659510700B1357D /* scrabbli.rb */,
 				7B33F3EF1652068200CC406C /* rb_main.rb */,
 			);
 			name = "Other Sources";
@@ -225,6 +247,8 @@
 				7B33F4131652094700CC406C /* game.rb in Resources */,
 				7B33F4141652094700CC406C /* player.rb in Resources */,
 				7B33F4151652094700CC406C /* tile.rb in Resources */,
+				7B243D4316594BE100B1357D /* constants.rb in Resources */,
+				7B243D481659510700B1357D /* scrabbli.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
