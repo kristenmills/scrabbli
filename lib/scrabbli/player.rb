@@ -1,6 +1,3 @@
-require File.join(File.dirname(__FILE__), 'anagram_trie')
-require File.join(File.dirname(__FILE__), 'constants')
-
 module Scrabble
 
 	class Player
@@ -20,8 +17,14 @@ module Scrabble
 		end
 
 		def make_next_move 
-			trie = AnagramTrie.build_trie(@tiles.join)
-			words = AnagramTrie.traverse trie
+			hands = Array.new 
+			@tiles.count.downto(2) do |x|
+				hands.concat(@tiles.permutation(x).to_a.map{|x| x = x.join})
+			end
+			words = Array.new
+			hands.each do |x|
+  			words << x if Scrabble::DICTIONARY.has_key?(x)
+			end
 			tile_hash = create_tile_hash
 			best_word = ''
 			best_score = 0
@@ -44,3 +47,4 @@ module Scrabble
 		end
 	end
 end
+

@@ -3,12 +3,7 @@ require 'trie'
 module Scrabble
   class AnagramTrie
 
-    DICTIONARY = Trie.new
-
-    File.open(File.join('..', '..', 'dictionary.txt')).each_line do |x|
-      DICTIONARY.add(x.chomp)
-    end
-
+   
     attr_accessor :value, :children
 
     def initialize value = ''
@@ -59,4 +54,16 @@ module Scrabble
     end
   end
 end
-
+super_hands = Array.new
+hand= ["A", "R", "Y", "G", "F", "P", "I"]
+super_hands.concat(hand.permutation(2).to_a.map{|x| x = x.join})
+super_hands.concat(hand.permutation(3).to_a.map{|x| x = x.join})
+super_hands.concat(hand.permutation(4).to_a.map{|x| x = x.join})
+super_hands.concat(hand.permutation(5).to_a.map{|x| x = x.join})
+super_hands.concat(hand.permutation(6).to_a.map{|x| x = x.join})
+super_hands.concat(hand.permutation(7).to_a.map{|x| x = x.join})
+super_duper_hands = Array.new
+super_hands.each do |x|
+  super_duper_hands << x if Scrabble::AnagramTrie::DICTIONARY.has_key?(x)
+end
+puts super_duper_hands

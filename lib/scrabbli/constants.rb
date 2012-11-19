@@ -1,5 +1,4 @@
 require 'trie'
-require 'algorithms'
 require 'benchmark'
 
 module Scrabble
@@ -35,5 +34,11 @@ module Scrabble
  		"Z" => 10 ,
  		"*" => 0
  	}
+
+ DICTIONARY = Trie.new
+
+    File.open(File.join('..', 'dictionary.txt')).each_line do |x|
+      DICTIONARY.add(x.chomp)
+    end
 
 end
