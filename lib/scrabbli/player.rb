@@ -16,11 +16,27 @@ module Scrabble
 			tile_hash
 		end
 
+		def wildcard hands
+			other_array = hands
+			while (other_array[0].include? '*')
+				array = Array.new
+				other_array.each do |x|
+					'A'.upto('Z') do |y|
+						array << x.sub('*', y)
+					end
+				end
+				other_array = array
+			end
+			other_array
+		end
+
 		def make_next_move 
 			hands = Array.new 
 			@tiles.count.downto(2) do |x|
 				hands.concat(@tiles.permutation(x).to_a.map{|x| x = x.join})
 			end
+			hands = wildcard(hands)
+
 			words = Array.new
 			hands.each do |x|
   			words << x if Scrabble::DICTIONARY.has_key?(x)
