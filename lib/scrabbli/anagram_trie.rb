@@ -28,6 +28,12 @@ module Scrabble
       self.value + char
     end
 
+    def filter str, rest
+      prefix = DICTIONARY.children_with_prefix(str)
+      sorted = rest.chars.sort.join
+      prefix.keep_if {|item| item.length <= str.length + rest.length &&(sorted.match(/#{ item.sub(str, '').chars.sort.join(".*")}/))}.nil?
+    end 
+
     def self.build_trie str, root = nil
       root ||= AnagramTrie.new
       str.each_char do |char|
@@ -46,7 +52,6 @@ module Scrabble
     def self.traverse root
       values = Array.new
       root.children.each do |x|
-
         values <<  x[1].value if DICTIONARY.has_key?(x[1].value)
         values.concat(AnagramTrie.traverse(x[1]))
       end
