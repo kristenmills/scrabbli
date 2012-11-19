@@ -37,7 +37,7 @@ module Scrabble
 
  DICTIONARY = Trie.new
 
-    File.open(File.join('..', 'dictionary.txt')).each_line do |x|
+    File.open(File.join(File.dirname(__FILE__), '..', '..', 'dictionary.txt')).each_line do |x|
       DICTIONARY.add(x.chomp)
     end
 

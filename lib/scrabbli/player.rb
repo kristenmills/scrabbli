@@ -30,6 +30,26 @@ module Scrabble
 			other_array
 		end
 
+		def best words
+			tile_hash = create_tile_hash
+			best_word = ['',0]
+			words.each do |word|
+				split_word = word.split(//)
+				score = 0
+				split_word.each do |y|
+					if tile_hash[y] > 0
+						score += TILE_VALUE[y]
+						tile_hash[y] -=1
+					end
+				end
+				if best_word[1] < score
+					best_word = [word, score]
+				end
+				tile_hash = create_tile_hash
+			end
+			best_word
+		end
+
 		def make_next_move 
 			hands = Array.new 
 			@tiles.count.downto(2) do |x|
@@ -42,24 +62,7 @@ module Scrabble
   			words << x if Scrabble::DICTIONARY.has_key?(x)
 			end
 			tile_hash = create_tile_hash
-			best_word = ''
-			best_score = 0
-			words.each do |word|
-				split_word = word.split(//)
-				score = 0
-				split_word.each do |y|
-					if tile_hash[y] > 0
-						score += TILE_VALUE[y]
-						tile_hash[y] -=1
-					end
-				end
-				if best_score < score
-					best_word = word
-					best_score = score
-				end
-				tile_hash = create_tile_hash
-			end
-			best_word
+			best words
 		end
 	end
 end
