@@ -1,6 +1,4 @@
 require 'matrix'
-require File.join(File.dirname(__FILE__), 'player')
-require File.join(File.dirname(__FILE__), 'board_square')
 module Scrabble
 	#The class that represent all components of a game of scrabble. includes the dictionary, the boards, 
 	class Game
@@ -16,6 +14,7 @@ module Scrabble
 			end
 		end
 
+		#parse the board.txt file to get the multiplier information
 		def parse_board
 			multiplier_board = Array.new
 			File.open(File.join(File.dirname(__FILE__), '..', '..', 'board.txt')).each_line do |line|
@@ -27,6 +26,7 @@ module Scrabble
 			multiplier_board
 		end
 
+		#setup the board matrix
 		def setup_board
 			multiplier_board = parse_board
 			multiplier_board.each_with_index do |line, row|

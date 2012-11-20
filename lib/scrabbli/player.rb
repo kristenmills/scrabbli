@@ -1,4 +1,5 @@
 require 'set'
+require 'colorize'
 module Scrabble
 
 	class Player
@@ -43,7 +44,7 @@ module Scrabble
 		def get_words perms
 			set = Set.new
 			perms.each do |k,v|
-				set.merge(getWords(k,v))
+				set.merge(filter(k,v))
 			end
 			set
 		end
@@ -51,20 +52,22 @@ module Scrabble
 		#returns the highest scoring word
 		def best words
 			tile_hash = create_tile_hash
-			best_word = ['',0]
-			
-			best_word
+			best_word = [[],0]
 			words.each do |word|
 				split_word = word.split(//)
 				score = 0
+				tile_word = ""
 				split_word.each do |y|
 					if tile_hash[y] > 0
 						score += TILE_VALUE[y]
 						tile_hash[y] -=1
+						tile_word += y
+					else
+						tile_word += y.yellow
 					end
 				end
 				if best_word[1] < score
-					best_word = [word, score]
+					best_word = [tile_word, score]
 				end
 				tile_hash = create_tile_hash
 			end
@@ -94,7 +97,7 @@ module Scrabble
 					end
 				end
 			end
-			words = blanks(words)
+			words = get_words(words)
  			best(words)[0]
 		end
 	end

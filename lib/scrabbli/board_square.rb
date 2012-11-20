@@ -3,7 +3,8 @@ module Scrabble
 
 		attr_accessor :tile, :multiplier, :multiplied, :type
 
-		def initialize multiplier=1, type =:word , tile=nil, multiplied=false
+		#create a new board square
+		def initialize multiplier=1, type =:word , tile=" ", multiplied=false
 			@tile = tile
 			@multiplier = multiplier
 			@type = type
