@@ -10,7 +10,7 @@ require File.join(File.dirname(__FILE__), 'scrabbli', 'board_square')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'player')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'game')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'cli') 
-hand =  ["P", "R", "W", "G", "Z", "A", "T", "V"] 
+hand =  ["M","I","X","E", "D","L","Y"] 
 player =  Scrabble::Player.new hand
 
 puts player.get_first_move

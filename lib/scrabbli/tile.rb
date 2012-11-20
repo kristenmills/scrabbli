@@ -21,9 +21,10 @@
 
 		def self.display word
 			str = ''
-			word.each do |x|
+			word[0].each do |x|
 				str += x.letter
 			end
+			str += " " + word[1].to_s + " " + word[2].to_s
 			str
 		end
 

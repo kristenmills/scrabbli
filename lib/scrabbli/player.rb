@@ -124,9 +124,13 @@ module Scrabble
 		end
 
 		def new_word x, word
-			new_word = word.dup
-			new_word[x].value = new_word[x].value*2
-			2 * (Tile.score new_word)
+			nw = Array.new
+
+			word.each do |v|
+				nw << v.dup
+			end
+			nw[x].value = nw[x].value*2
+			2 * (Tile.score nw)
 		end
 
 		def get_first_move
@@ -143,20 +147,24 @@ module Scrabble
 			scored_words.each_value do |value|
 				value.each do |word|
 					best_score = 2*(Tile.score word)
-					row = 0
+					row = 7 - word.length/2
 					column = 7
 					(word.length - 4).times do |x|
+						row_pos = 3-x
+						row_neg = 7 - x
 						new_score = new_word x, word
 						if new_score > best_score
 							best_score = new_score
+							row=row_pos
 						end
 						new_score = new_word(-(x+1), word)
 						if new_score > best_score
 							best_score = new_score
+							row=row_neg
 						end
 					end
 					rescored_words[best_score] ||= Array.new
-					rescored_words[best_score] << word
+					rescored_words[best_score] << [word, row, column]
 				end
 			end
 			Tile.display(rescored_words[rescored_words.max[0]][0])
