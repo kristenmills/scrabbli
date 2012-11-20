@@ -74,8 +74,31 @@ module Scrabble
 			best_word
 		end
 
+		def score_words words
+			tile_hash = create_tile_hash
+			words_scored = Hash.new
+			words.each do |word|
+				split_word = word.split(//)
+				score = 0
+				tile_word = []
+				split_word.each do |y|
+					if tile_hash[y] > 0
+						score += TILE_VALUE[y]
+						tile_hash[y] -=1
+						tile_word << Tile.new(y, TILE_VALUE[y])
+					else
+						tile_word << Tile.new(y.yellow, 0)
+					end
+				end
+				words_scored[score] ||= Set.new
+				words_scored[score] << tile_word
+				tile_hash = create_tile_hash
+			end
+			words_scored
+		end
+
 		#makes the next move
-		def make_next_move 
+		def get_next_moves 
 			prefix_hash = Hash.new
 			@tiles.count.downto(2) do |x|
 				ti = @tiles.permutation(x)
@@ -97,8 +120,46 @@ module Scrabble
 					end
 				end
 			end
-			words = get_words(words)
- 			best(words)[0]
+			get_words(words)
+		end
+
+		def new_word x, word
+			new_word = word.dup
+			new_word[x].value = new_word[x].value*2
+			2 * (Tile.score new_word)
+		end
+
+		def get_first_move
+			words = get_next_moves
+			scored_words = score_words(words)
+			high = scored_words.max[0]
+			scored_words.each do |k,v|
+				if k < high
+					v.delete_if{|x| x.length < 5}
+				end
+			end
+			scored_words.delete_if{|k,v| v.empty?}
+			rescored_words = Hash.new
+			scored_words.each_value do |value|
+				value.each do |word|
+					best_score = 2*(Tile.score word)
+					row = 0
+					column = 7
+					(word.length - 4).times do |x|
+						new_score = new_word x, word
+						if new_score > best_score
+							best_score = new_score
+						end
+						new_score = new_word(-(x+1), word)
+						if new_score > best_score
+							best_score = new_score
+						end
+					end
+					rescored_words[best_score] ||= Array.new
+					rescored_words[best_score] << word
+				end
+			end
+			Tile.display(rescored_words[rescored_words.max[0]][0])
 		end
 	end
 end
