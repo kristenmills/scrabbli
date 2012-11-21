@@ -5,13 +5,17 @@ module Scrabble
 		attr_accessor :board, :players
 
 		#Initializes a Scrabble Game
-		def initialize num_players
+		def initialize 
 			@board = Matrix.build(15){BoardSquare.new}
 			setup_board
 			@players = Array.new
-			num_players.times do 
-				@players << Player.new
-			end
+			# num_players.times do 
+			# 	@players << Player.new
+			# end
+		end
+
+		def add_player player
+			@players << player
 		end
 
 		#parse the board.txt file to get the multiplier information

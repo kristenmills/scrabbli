@@ -3,12 +3,28 @@ require 'colorize'
 module Scrabble
 
 	class Player
-		attr_accessor :score, :tiles
+		attr_accessor :name, :score, :tiles
 
 		#Create a new Scrabble Player
-		def initialize  tiles=nil, score=0
+		def initialize  name, tiles=Array.new, score=0
+			@name = name
 			@score = score
 			@tiles = tiles
+		end
+
+		def to_s
+			@name
+		end
+
+		def pp_tiles
+		 str = ''
+		 @tiles.each do |x|
+		 	str += x + ","
+		 end
+		 (7-@tiles.count).times do
+		 	str += "_,"
+		 end
+		 str.chomp
 		end
 
 		#create the tile hash
