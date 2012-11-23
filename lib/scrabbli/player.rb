@@ -125,10 +125,8 @@ module Scrabble
 				end
 			end
 			words =Hash.new 
-			count = 0
 			prefix_hash.each do |p, v|
 				if(Scrabble::DICTIONARY.children(p).count != 0)
-					count +=1
 					v.each do |y|
 						c = y.count "*"
 						words[c] ||= Set.new

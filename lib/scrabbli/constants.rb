@@ -1,4 +1,4 @@
-require 'trie'
+require 'algorithms'
 require 'benchmark'
 
 module Scrabble
@@ -35,10 +35,6 @@ module Scrabble
  		"*" => 0
  	}
 
- DICTIONARY = Trie.new
-
-    File.open(File.join(File.dirname(__FILE__), '..', '..', 'dictionary.txt')).each_line do |x|
-      DICTIONARY.add(x.chomp)
-    end
-
+	DICTIONARY = Trie.new
+	DICTIONARY.load(File.open(File.join(File.dirname(__FILE__), '..', '..', 'dictionary.txt')))
 end

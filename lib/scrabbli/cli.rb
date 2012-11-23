@@ -153,9 +153,3 @@ module Scrabble
 	end
 end
 	
-begin
-	Scrabble::CLI.run
-rescue Interrupt
-	puts 
-	Scrabble::Helpers::exit_message
-end
