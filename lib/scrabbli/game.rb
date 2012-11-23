@@ -1,10 +1,12 @@
 require 'matrix'
 module Scrabble
-	#The class that represent all components of a game of scrabble. includes the dictionary, the boards, 
+
+	# The class that represent all components of a game of scrabble. includes the dictionary, the boards, 
 	class Game
+
 		attr_accessor :board, :players
 
-		#Initializes a Scrabble Game
+		# Initializes a Scrabble Game
 		def initialize 
 			@board = Matrix.build(15){BoardSquare.new}
 			setup_board
@@ -14,11 +16,14 @@ module Scrabble
 			# end
 		end
 
+		# Adds a Player to the game
+		# 
+		# @param [Player] player the player to add to the game
 		def add_player player
 			@players << player
 		end
 
-		#parse the board.txt file to get the multiplier information
+		# Parse the board.txt file to get the multiplier information
 		def parse_board
 			multiplier_board = Array.new
 			File.open(File.join(File.dirname(__FILE__), '..', '..', 'board.txt')).each_line do |line|
@@ -30,7 +35,7 @@ module Scrabble
 			multiplier_board
 		end
 
-		#setup the board matrix
+		# Setup the board matrix
 		def setup_board
 			multiplier_board = parse_board
 			multiplier_board.each_with_index do |line, row|

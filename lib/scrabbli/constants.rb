@@ -1,6 +1,3 @@
-require 'algorithms'
-require 'benchmark'
-
 module Scrabble
 
 	extend self
@@ -35,6 +32,7 @@ module Scrabble
  		"*" => 0
  	}
 
-	DICTIONARY = Trie.new
+ 	#The dictionary
+	DICTIONARY = Trie::Trie.new
 	DICTIONARY.load(File.open(File.join(File.dirname(__FILE__), '..', '..', 'dictionary.txt')))
 end

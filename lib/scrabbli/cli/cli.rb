@@ -1,5 +1,6 @@
-require 'colorize'
 module Scrabble
+
+	# The module that contains methods for the CLI
 	module CLI
 		extend self
 		attr_accessor :game, :player

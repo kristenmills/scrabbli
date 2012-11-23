@@ -1,7 +1,8 @@
 require 'benchmark'
 require 'set'
 
-module Scrabble
+# The Module that contains things relevant the the Trie data structure
+module Trie
 	# The Trie class
 	class Trie
 
@@ -13,6 +14,8 @@ module Scrabble
 		end
 
 		# Adds a new word to the trie
+		#
+		# @param [String] word the word to add to the trie
 		def add word
 			node = @root
 			word.each_char do |char|
@@ -23,14 +26,18 @@ module Scrabble
 		end
 
 		# Load the trie using a file
+		#
+		# @param [String] file_name the file to add
 		def load file_name
 			File.open(file_name).each_line do |line|
 				add(line.chomp)
 			end
 		end
 
-		# Does this try have the key word
-		def has_key? word
+		# Is this word a word?
+		#
+		# @param [String] word the string to check to see if it is a word
+		def word? word
 			node = @root
 			word.each_char do |char|
 				break unless node = node.walk(char)
@@ -39,11 +46,20 @@ module Scrabble
 		end
 
 		# Gets all words that are anagrams of a given string
+		# Accepts wild cards as '*'
+		#
+		# @param [String] word the word you are looking for anagrams of
+		# @return a set of all possible words
 		def get_all word
 			get_all_recursive @root, word.split(//), ''
 		end
 
 		# Recursive get's all anagrams of words
+		#
+		# @param [TrieNode] node the node you are currently on
+		# @param [String] word the remain characters in the string
+		# @param [String] prefix the already used characters in the word
+		# @return the set of possible words
 		def get_all_recursive node, word, prefix
 			set = Set.new
 			word.count.times do 
@@ -65,14 +81,6 @@ module Scrabble
 		end
 	end
 end
-
-this = Trie.new
-#
-# puts "Answer: #{this.load(File.join(File.dirname(__FILE__), '..', '..', '..', 'dictionary.txt'))}"
-Benchmark.bm do |x|
-	x.report {this.load(File.join(File.dirname(__FILE__), '..', '..', '..', 'dictionary.txt'))}
-end
-
 # def thing this
 # array = "FORESTRY".split(//).permutation(8).to_set.map{|x| x = x.join}
 
