@@ -30,15 +30,6 @@ module Scrabble
 			end
 			sum
 		end
-
-		# def self.display word
-		# 	str = ''
-		# 	word[0].each do |x|
-		# 		str += x.letter
-		# 	end
-		# 	str += " " + word[1].to_s + " " + word[2].to_s
-		# 	str
-		# end
-
+		
 	end
 end

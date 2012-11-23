@@ -1,5 +1,6 @@
 require 'benchmark'
 require 'set'
+require 'colorize'
 
 # The Module that contains things relevant the the Trie data structure
 module Trie
@@ -19,7 +20,7 @@ module Trie
 		def add word
 			node = @root
 			word.each_char do |char|
-				node.children[char] ||= TrieNode.new char, node
+				node.children[char] ||= TrieNode.new char
 				node = node.walk(char)
 			end
 			node.terminal = true
@@ -51,7 +52,7 @@ module Trie
 		# @param [String] word the word you are looking for anagrams of
 		# @return a set of all possible words
 		def get_all word
-			get_all_recursive @root, word.split(//), ''
+			get_all_recursive @root, word, ''
 		end
 
 		# Recursive get's all anagrams of words
@@ -68,10 +69,10 @@ module Trie
 				char = s.shift
 				char_array = [char]
 				if char == '*'
-					char_array = ('A'..'Z').to_a
+					char_array = ('A'..'Z').to_a#.map{|x| x =  x.light_yellow}
 				end
 				char_array.each do |x|
-					next unless n = node.walk(x)
+					next unless n = node.walk(x.uncolorize)
 					set << (prefix + x) if n.terminal
 				
 					set += get_all_recursive(n ,s, prefix + x )
@@ -88,9 +89,13 @@ end
 # array.each do |y|
 # 	s.merge(this.get_all(y))
 # end
-# end
+# ed
 
-# puts this.get_all("TEXTING**").to_a.count
-# Benchmark.bm do |x|
-# 	x.report { this.get_all "TEXTING**"}
-# end
+# DICTIONARY = Trie::Trie.new
+# DICTIONARY.load(File.open(File.join(File.dirname(__FILE__), '..','..', '..', 'dictionary.txt')))
+
+
+#  puts DICTIONARY.get_all("FOREST*Y").count
+#  Benchmark.bm do |x|
+#  	x.report { DICTIONARY.get_all "FOREST*Y"}
+#  end

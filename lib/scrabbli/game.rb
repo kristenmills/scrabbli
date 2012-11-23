@@ -11,9 +11,6 @@ module Scrabble
 			@board = Matrix.build(15){BoardSquare.new}
 			setup_board
 			@players = Array.new
-			# num_players.times do 
-			# 	@players << Player.new
-			# end
 		end
 
 		# Adds a Player to the game
@@ -57,6 +54,5 @@ module Scrabble
 				end
 			end
 		end
-
 	end
 end
