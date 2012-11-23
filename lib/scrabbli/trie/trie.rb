@@ -1,7 +1,3 @@
-require 'benchmark'
-require 'set'
-require 'colorize'
-
 # The Module that contains things relevant the the Trie data structure
 module Trie
 	# The Trie class
@@ -50,9 +46,11 @@ module Trie
 		# Accepts wild cards as '*'
 		#
 		# @param [String] word the word you are looking for anagrams of
+		# @param [String] required a string of characters that must  be included 
 		# @return a set of all possible words
-		def get_all word
-			get_all_recursive @root, word, ''
+		def get_all word, required = nil
+			word << required.split(//) unless required.nil?
+			get_all_recursive @root, word, '', required
 		end
 
 		# Recursive get's all anagrams of words
@@ -60,22 +58,33 @@ module Trie
 		# @param [TrieNode] node the node you are currently on
 		# @param [String] word the remain characters in the string
 		# @param [String] prefix the already used characters in the word
+		# @param [String] required a string of characters that must  be included 
 		# @return the set of possible words
-		def get_all_recursive node, word, prefix
+		def get_all_recursive node, word, prefix, required
 			set = Set.new
 			word.count.times do 
 				s = word.rotate
 				word.rotate!
 				char = s.shift
-				char_array = [char]
+				char_array = [char].flatten
+				prefix_more = prefix
+				n = node
+				if char_array.count >  1
+					(char_array.count-1).times do 
+						c = char_array.shift
+						break unless n = n.walk(c.uncolorize)
+						prefix_more += c
+					end
+					next if n.nil?
+				end
 				if char == '*'
 					char_array = ('A'..'Z').to_a#.map{|x| x =  x.light_yellow}
 				end
 				char_array.each do |x|
-					next unless n = node.walk(x.uncolorize)
-					set << (prefix + x) if n.terminal
+					next unless n = n.walk(x.uncolorize)
+					set << (prefix_more + x) if (n.terminal && (prefix_more + x).include?(required))
 				
-					set += get_all_recursive(n ,s, prefix + x )
+					set += get_all_recursive(n ,s, prefix_more + x, required )
 				end
 			end
 			set
@@ -89,11 +98,10 @@ end
 # array.each do |y|
 # 	s.merge(this.get_all(y))
 # end
-# ed
+# # ed
 
 # DICTIONARY = Trie::Trie.new
 # DICTIONARY.load(File.open(File.join(File.dirname(__FILE__), '..','..', '..', 'dictionary.txt')))
-
 
 #  puts DICTIONARY.get_all("FOREST*Y").count
 #  Benchmark.bm do |x|

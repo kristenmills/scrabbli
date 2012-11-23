@@ -1,5 +1,3 @@
-require 'set'
-require 'colorize'
 module Scrabble
 
 	# The Player class

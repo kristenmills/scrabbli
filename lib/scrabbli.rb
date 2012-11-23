@@ -4,6 +4,10 @@ module Scrabble
 
 end
 
+require 'benchmark'
+require 'set'
+require 'colorize'
+require 'matrix'
 require File.join(File.dirname(__FILE__), 'scrabbli', 'trie', 'trie_node')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'trie', 'trie')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'constants')
@@ -19,7 +23,12 @@ game = Scrabble::Game.new
 
 player = Scrabble::Player.new('Kristen','REG*ITY'.split(//))
 
-puts Scrabble::Generator.first_word player, game.board
+puts Scrabble::DICTIONARY.get_all("HIKAMBERPT".split(//), "JACK").to_a
 Benchmark.bm do |x|
-	x.report {Scrabble::Generator.first_word player, game.board}
+	x.report {Scrabble::DICTIONARY.get_all("HIKNGPT".split(//), "JACK")}
 end
+
+# puts Scrabble::Generator.first_word player, game.board
+# Benchmark.bm do |x|
+# 	x.report {Scrabble::Generator.first_word player, game.board}
+# end

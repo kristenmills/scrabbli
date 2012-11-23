@@ -9,5 +9,5 @@ To make coding more fun, everyone participating will be writing their solutions 
 To see more information go to **[scrabb.li](http://scrabb.li)**.
 
 
-### The most hip
+## The Most Hip
 I chose ruby. Mine is hip. I used tries because all the cool kids use tries. 

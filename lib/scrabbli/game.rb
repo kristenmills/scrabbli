@@ -1,4 +1,3 @@
-require 'matrix'
 module Scrabble
 
 	# The class that represent all components of a game of scrabble. includes the dictionary, the boards, 

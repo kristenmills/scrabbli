@@ -26,7 +26,8 @@ module Scrabble
 			best
 		end
 
-		def check_hooking player, board
+		def check_hooking player, board, word_list
+			
 		end
 
 		def check_add_to_exising player, board
