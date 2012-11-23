@@ -1,18 +1,13 @@
-# [Scrabbli](http://www.scrabb.li)
+# Scrabbli
 
-## About
-Scrabbli is a simple contest where people indvidiually code their own solutions to the following problem:
+## About Scrabbli
 
-> What is the best move I could make on my next turn of a given Scrabble game?
+Scrabbli is a simple contest where the participants create a scrabble solver that given their hand and the current state of the board, return the best next move (i.e. highest scoring word)
 
 To make coding more fun, everyone participating will be writing their solutions in different languages (for the most part).
 
-## Getting Started
-1. Read the [rules](http://www.scrabb.li/rules.html) for Scrabbli.
-2. Make sure that your name and language of choice are on the
-	 [assignments page](http://www.scrabb.li/assignments.html).
-3. Fork this repository.
-4. Update your .gitignore for your language/framework of choice(if you need to).
-5. Get started on your implementation.
-6. ???
-7. PROFIT
+To see more information go to **[scrabb.li](http://scrabb.li)**.
+
+
+### The most hip
+I chose ruby. Mine is hip. I used tries because all the cool kids use tries. 
