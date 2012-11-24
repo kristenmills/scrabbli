@@ -89,10 +89,10 @@ module Trie
 					char_array = ('A'..'Z').to_a#.map{|x| x =  x.light_yellow}
 				end
 				char_array.each do |x|
-					next unless n = n.walk(x.uncolorize)
-					set << (prefix_more + x) if (n.terminal && (prefix_more + x).include?(required))
+					next unless nn = n.walk(x.uncolorize)
+					set << (prefix_more + x) if (nn.terminal && (prefix_more + x).include?(required))
 				
-					set += get_all_recursive(n ,s, prefix_more + x, required )
+					set += get_all_recursive(nn ,s, prefix_more + x, required )
 				end
 			end
 			set
