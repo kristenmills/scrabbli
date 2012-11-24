@@ -21,5 +21,9 @@ module Trie
 			@children[char]
 		end
 
+		def leaf?
+			@children.count == 0
+		end
+
 	end
 end

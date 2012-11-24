@@ -11,7 +11,6 @@ require 'matrix'
 require File.join(File.dirname(__FILE__), 'scrabbli', 'trie', 'trie_node')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'trie', 'trie')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'constants')
-require File.join(File.dirname(__FILE__), 'scrabbli', 'tile')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'board_square')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'generator')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'player')
@@ -21,14 +20,18 @@ require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli')
 
 game = Scrabble::Game.new
 
-player = Scrabble::Player.new('Kristen','REG*ITY'.split(//))
+player = Scrabble::Player.new('Kristen',"JACK".split(//))
 
-puts Scrabble::DICTIONARY.get_all("HIKAMBERPT".split(//), "JACK").to_a
-Benchmark.bm do |x|
-	x.report {Scrabble::DICTIONARY.get_all("HIKNGPT".split(//), "JACK")}
-end
+# puts Scrabble::DICTIONARY.get_all("HIKAMBERPT".split(//), "JACK").to_a
+# Benchmark.bm do |x|
+# 	x.report {Scrabble::DICTIONARY.get_all("HIKNGPT".split(//), "JACK")}
+# end
 
 # puts Scrabble::Generator.first_word player, game.board
-# Benchmark.bm do |x|
-# 	x.report {Scrabble::Generator.first_word player, game.board}
-# end
+word = Scrabble::ScrabbleWord.new("AMBER", 34, 7, 7, :across)
+game.word_list << word
+Scrabble::Generator.place word, game.board
+puts Scrabble::Generator.check_add_to_exising player, game.board, game.word_list
+Benchmark.bm do |x|
+	x.report {Scrabble::Generator.check_add_to_exising player, game.board, game.word_list}
+end

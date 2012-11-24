@@ -3,13 +3,14 @@ module Scrabble
 	# The class that represent all components of a game of scrabble. includes the dictionary, the boards, 
 	class Game
 
-		attr_accessor :board, :players
+		attr_accessor :board, :players, :word_list
 
 		# Initializes a Scrabble Game
 		def initialize 
 			@board = Matrix.build(15){BoardSquare.new}
 			setup_board
 			@players = Array.new
+			@word_list = Set.new
 		end
 
 		# Adds a Player to the game

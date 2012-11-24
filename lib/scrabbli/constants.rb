@@ -35,4 +35,7 @@ module Scrabble
  	#The dictionary
 	DICTIONARY = Trie::Trie.new
 	DICTIONARY.load(File.open(File.join(File.dirname(__FILE__), '..', '..', 'dictionary.txt')))
+
+	#A wrapper around scrabble words
+	ScrabbleWord = Struct.new(:word, :score, :row, :col, :dir)
 end

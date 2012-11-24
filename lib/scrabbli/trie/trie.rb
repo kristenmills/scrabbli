@@ -22,6 +22,14 @@ module Trie
 			node.terminal = true
 		end
 
+		def delete word
+			node = @root
+			word.each_char do |c|
+				return nil unless node = node.walk(c)
+			end
+			node.terminal = false
+		end
+
 		# Load the trie using a file
 		#
 		# @param [String] file_name the file to add
@@ -48,8 +56,8 @@ module Trie
 		# @param [String] word the word you are looking for anagrams of
 		# @param [String] required a string of characters that must  be included 
 		# @return a set of all possible words
-		def get_all word, required = nil
-			word << required.split(//) unless required.nil?
+		def get_all word, required = ''
+			word << required.split(//) unless required == ''
 			get_all_recursive @root, word, '', required
 		end
 
