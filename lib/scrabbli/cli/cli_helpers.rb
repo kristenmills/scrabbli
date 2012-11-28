@@ -23,6 +23,8 @@ module Scrabble
 			def draw_board game
 				string = ''
 				game.board.each_with_index do |square, row, column|
+					anti_string = square.tile
+					anti_string ||= ' '
 					if column == 0
 						puts string
 						string =''
@@ -30,18 +32,18 @@ module Scrabble
 					case square.multiplier
 					when 3
 						if square.type == :word
-							string +="[ ".green + square.tile + " ]".green
+							string +="[ ".green + anti_string + " ]".green
 						else
-							string +="[ ".blue + square.tile + " ]".blue
+							string +="[ ".blue + anti_string + " ]".blue
 						end
 					when 2
 						if square.type == :word
-							string +="[ ".light_red + square.tile + " ]".light_red
+							string +="[ ".light_red + anti_string + " ]".light_red
 						else
-							string +="[ ".light_cyan + square.tile + " ]".light_cyan
+							string +="[ ".light_cyan + anti_string + " ]".light_cyan
 						end
 					else
-						string += "[ " + square.tile + " ]"
+						string += "[ " + anti_string + " ]"
 					end
 				end
 				puts string
@@ -110,28 +112,28 @@ module Scrabble
 			# splits string for wrapping
 			# 
 			# @param [String] string the string to be split
-			# @param [Width] width the width of the line
+			# @param [Integer] length the length of the line
 			# @return the array of each line
-			def split string, width
+			def split string, length
 				split = Array.new
-				if string.length > width #if the string needs to be split
+				if string.length > length #if the string needs to be split
 					string_words = string.split(" ")
 					line = ""
 					string_words.each do |x|
-						if x.length > width #if the word needs to be split
+						if x.length > length #if the word needs to be split
 							#add the start of the word onto the first line (even if it has already started)
-							while line.length < width
+							while line.length < length
 								line += x[0]
 								x = x[1..-1]
 							end
 							split << line
 							#split the rest of the word up onto new lines
-							split_word = x.scan(%r[.{1,#{width}}])
+							split_word = x.scan(%r[.{1,#{length}}])
 							split_word[0..-2].each do |word|
 								split << word
 							end
 							line = split_word.last+" "
-						elsif (line + x).length > width-1 #if the word would fit alone on its own line
+						elsif (line + x).length > length-1 #if the word would fit alone on its own line
 							split << line.chomp
 							line = x + " "
 						else #if the word can be added to this line

@@ -18,20 +18,33 @@ require File.join(File.dirname(__FILE__), 'scrabbli', 'game')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli_helpers')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli') 
 
+# Scrabble::CLI.run 
+
 game = Scrabble::Game.new
 
-player = Scrabble::Player.new('Kristen',"****".split(//))
+player = Scrabble::Player.new('Kristen',"BOREADDITION".split(//))
 
-# puts Scrabble::DICTIONARY.get_all("HIKAMBERPT".split(//), "JACK").to_a
+# puts Scrabble::DICTIONARY.get_all("REGAL**Y".split(//)).to_a.count
 # Benchmark.bm do |x|
-# 	x.report {Scrabble::DICTIONARY.get_all("HIKNGPT".split(//), "JACK")}
+# 	x.report {Scrabble::DICTIONARY.get_all("REGALITY".split(//))}
 # end
 
 # puts Scrabble::Generator.first_word player, game.board
-word = Scrabble::ScrabbleWord.new("AMBE", 34, 7, 7, :across)
+word = Scrabble::ScrabbleWord.new("BORE", 20, 7, 7, :across)
 game.word_list << word
-Scrabble::Generator.place word, game.board
-puts Scrabble::Generator.check_add_to_exising player, game.board, game.word_list
-Benchmark.bm do |x|
-	x.report {Scrabble::Generator.check_add_to_exising player, game.board, game.word_list}
-end
+Scrabble::Generator.place word, game.board, player
+# puts Scrabble::Generator.attempt_score "SNACKS", game.board, word.row, 14, :down
+puts Scrabble::Generator.check_hooking player, game.board, game.word_list
+# puts Scrabble::Generator.check_add_to_existing player, game.board, game.word_list
+# Benchmark.bm do |x|
+	# x.report {Scrabble::Generator.check_add_to_exising player, game.board, game.word_list}
+# end
+
+# word = Scrabble::ScrabbleWord.new("AMBER", 34, 7, 7, :across)
+# # word2 = Scrabble::ScrabbleWord.new("AMBER", 55, 7, 7, :across)
+# # puts Scrabble::same_word(word, word2)
+# # game = Scrabble::Game.new
+
+# Scrabble::Generator.place(word, game.board, player)
+# # puts Scrabble::Generator.invalid(game.board, 'A', 7, 7, :down)
+# Scrabble::CLI::run

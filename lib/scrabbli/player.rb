@@ -29,7 +29,7 @@ module Scrabble
 		 (7-@tiles.count).times do
 		 	str += "_,"
 		 end
-		 str.chomp
+		 str.chomp.chomp
 		end
 	end
 end

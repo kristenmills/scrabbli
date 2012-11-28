@@ -38,4 +38,8 @@ module Scrabble
 
 	#A wrapper around scrabble words
 	ScrabbleWord = Struct.new(:word, :score, :row, :col, :dir)
+
+	def same_word word1, word2
+		word2.word != word1.word && word2.row != word1.row && word2.col != word1.col && word2.dir != word1.dir
+	end
 end

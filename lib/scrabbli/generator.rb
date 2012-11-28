@@ -1,6 +1,6 @@
 module Scrabble
 
-	#Moudule cotaining algorithms to generate next move
+	# Moudule cotaining algorithms to generate next move
 	module Generator
 
 		extend self
@@ -18,7 +18,7 @@ module Scrabble
 				word.length.times do 
 					score = 0
 					if (0..14).cover?(row) && (0..14).cover?(col)
-						score = attempt_placement word, board, row, col, :down
+						score = attempt_score word, board, row, col, :down
 					end
 					if score > best[1]
 						if rand > 0.5
@@ -30,7 +30,7 @@ module Scrabble
 					row -=1
 				end
 			end
-			best
+			[best, best.score]
 		end
 
 		# Finds the best word by adding your letters to other words on the board
@@ -38,7 +38,7 @@ module Scrabble
 		# @param [Player] player the player whose tiles you are using 
 		# @param [Matrix] board the scrabble board matrix
 		# @param [Array] word_list the list of words already been played
-		def check_add_to_exising player, board, word_list
+		def check_add_to_existing player, board, word_list
 			best =ScrabbleWord.new('', 0, 0, 0, 0)
 			word_list.each do |word|
 				list = DICTIONARY.get_all(player.tiles, word.word)
@@ -53,18 +53,68 @@ module Scrabble
 					end
 					score = 0
 					if (0..14).cover?(row) && (0..14).cover?(col)
-						score = attempt_placement(x, board, row, col, word.dir)
+						score = attempt_score(x, board, row, col, word.dir)
 					end
-					if score > best.score
-						best = ScrabbleWord.new(x, score, row, col, word.dir)
+					if score
+						new_word = ScrabbleWord.new(x, score, row, col, word.dir)
+						if score > best.score && !Scrabble.same_word(new_word, word)
+							best = new_word
+						end
 					end
 				end
 			end
-			best
+			[best, best.score]
 		end
-
+		
+		# Finds the best word by adding your letters to other words on the board
+		# 
+		# @param [Player] player the player whose tiles you are using 
+		# @param [Matrix] board the scrabble board matrix
+		# @param [Array] word_list the list of words already been played
 		def check_hooking player, board, word_list
-
+			best =Array.new(2, ScrabbleWord.new('', 0, 0, 0, 0))
+			words = DICTIONARY.get_all(player.tiles)
+			word_hash = Hash.new
+			words.each do |word|
+				word.each_char do |char|
+					word_hash[char] ||= Set.new
+					word_hash[char] << word
+				end
+			end
+			word_list.each do |word|
+				player.tiles.each do |char|
+					if DICTIONARY.word?(word.word + char)
+						word_hash[char].each do |new_word|
+							ind = (0..new_word.length-1).find_all { |i| new_word[i,1] == char }
+							ind.each do |i|
+								row = word.row
+								col = word.col
+								dir = nil
+								if word.dir == :across
+									row -= i 
+									col += word.word.length 
+									dir = :down
+								else
+									row += word.word.length 
+									col -= i
+									dir = :across
+								end
+								if (0..14).cover?(row) && (0..14).cover?(col)
+									new_score = attempt_score(new_word, board, row, col, dir)
+									hook_score = attempt_score(word.word + char, board, word.row, word.col, word.dir)
+								end
+								if new_score && hook_score
+									if new_score + hook_score > best.inject(0){|sum, i| sum + i.score}
+										best =[ScrabbleWord.new(new_word, new_score, row, col, dir), 
+											ScrabbleWord.new(word.word + char, hook_score, word.row, word.col, word.dir)]
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		[best, best.inject(0){|sum, i| sum + i.score}]
 		end
 
 		def check_perpendicular player, board
@@ -73,12 +123,17 @@ module Scrabble
 		def check_parallel player, board
 		end
 
-		def place word, board
+		def place word, board, player
 			row = word.row
 			col = word.col
 			word.word.each_char do |char|
-				board[row,col].tile = char
-				board[row,col].multiplied = true
+				if !board[row,col].multiplied
+					board[row,col].tile = char
+					board[row,col].multiplied = true
+					index = player.tiles.index(char)
+					index ||= player.tiles.index('*')
+					player.tiles.delete_at(index)
+				end
 				if word.dir == :down
 					row += 1
 				else
@@ -95,18 +150,22 @@ module Scrabble
 		# @param [Integer] col the column you want to start at
 		# @param [Symbol]	dir the direction (:down or :across) that you are building in 
 		# @return the score of the word or 0 if it can't be placed
-		def attempt_placement word, board, row, col, dir
+		def attempt_score word, board, row, col, dir
 			sum =0
 			multiplier = 1
 			word.each_char do  |char|
-				val = TILE_VALUE[char]
-				val ||= 0
+				return false if invalid(board, char, row, col, dir) || !(0..14).cover?(col) || !(0..14).cover?(row)
 				if !board[row,col].multiplied 
+					val = TILE_VALUE[char]
+					val ||= 0
 					if board[row,col].type == :word
 						multiplier *= board[row,col].multiplier
 					else
 						val *= board[row,col].multiplier
 					end
+				else
+					val = TILE_VALUE[board[row, col].tile]
+					val ||= 0
 				end
 				sum += val
 				if dir == :down
@@ -114,10 +173,60 @@ module Scrabble
 				else
 					col += 1
 				end
-				return 0 unless (0..14).cover?(col) && (0..14).cover?(row)
 			end
 			sum*multiplier
 		end
-	end
 
+		# Checks if a given tile is invlaid
+		# 
+		# @param [Matrix] board the scrabble board
+		# @param [String] tile the tile trying to be placed
+		# @param [Integer] row the row you are trying to place a tile in
+		# @param [Integer] col the column you are trying to place a tile in
+		# @param [Symbol] dir the direction the current word this tile is in is going
+		def invalid board, tile, row, col, dir
+			invalid = false
+			word = ''
+			if dir == :down
+				if (!board[row, col-1].nil? && board[row, col-1].tile) || (!board[row, col+1].nil? && board[row, col+1].tile) 
+					temp_col = col
+					while board[row, temp_col-1].tile 
+						temp_col -= 1
+					end
+					while board[row, temp_col].tile 
+						if temp_col == col
+							word += tile
+						else
+							word += board[row, temp_col].tile
+						end
+						temp_col+=1
+					end
+					if !DICTIONARY.word?(word)
+						invalid = true
+					end
+				end
+			else
+				if(board[row-1, col].nil? && board[row-1, col].tile) || (board[row+1, col].nil? && board[row+1, col].tile)
+					temp_row = row
+					while board[temp_row-1, col].tile 
+						temp_row -= 1
+					end
+					while board[temp_row, col].tile 
+						if temp_row == row
+							word += tile
+						else
+							word += board[temp_row, col].tile
+						end		
+						temp_row+=1
+					end
+					if !DICTIONARY.word?(word)
+						invalid = true
+					end
+				end
+			end
+			invalid
+		end
+	end
 end
+
+

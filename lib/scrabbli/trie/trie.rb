@@ -86,7 +86,7 @@ module Trie
 					next if n.nil?
 				end
 				if char == '*'
-					char_array = ('A'..'Z').to_a#.map{|x| x =  x.light_yellow}
+					char_array = ('A'..'Z').to_a
 				end
 				char_array.each do |x|
 					next unless nn = n.walk(x.uncolorize)
