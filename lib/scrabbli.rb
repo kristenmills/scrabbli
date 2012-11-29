@@ -22,7 +22,7 @@ require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli')
 
 game = Scrabble::Game.new
 
-player = Scrabble::Player.new('Kristen',"BOREADDITION".split(//))
+player = Scrabble::Player.new('Kristen',"AFTERAFKDJASDBET".split(//))
 
 # puts Scrabble::DICTIONARY.get_all("REGAL**Y".split(//)).to_a.count
 # Benchmark.bm do |x|
@@ -30,11 +30,15 @@ player = Scrabble::Player.new('Kristen',"BOREADDITION".split(//))
 # end
 
 # puts Scrabble::Generator.first_word player, game.board
-word = Scrabble::ScrabbleWord.new("BORE", 20, 7, 7, :across)
+word = Scrabble::ScrabbleWord.new("AFTER", 20, 7, 7, :across)
 game.word_list << word
 Scrabble::Generator.place word, game.board, player
 # puts Scrabble::Generator.attempt_score "SNACKS", game.board, word.row, 14, :down
-puts Scrabble::Generator.check_hooking player, game.board, game.word_list
+val = Scrabble::Generator.check_hooking(player, game.board, game.word_list)
+puts val
+Scrabble::Generator.place(val[0][0], game.board, player)
+Scrabble::CLI::Helpers::draw_board game
+
 # puts Scrabble::Generator.check_add_to_existing player, game.board, game.word_list
 # Benchmark.bm do |x|
 	# x.report {Scrabble::Generator.check_add_to_exising player, game.board, game.word_list}

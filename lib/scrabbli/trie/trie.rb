@@ -99,19 +99,3 @@ module Trie
 		end
 	end
 end
-# def thing this
-# array = "FORESTRY".split(//).permutation(8).to_set.map{|x| x = x.join}
-
-# s = Set.new
-# array.each do |y|
-# 	s.merge(this.get_all(y))
-# end
-# # ed
-
-# DICTIONARY = Trie::Trie.new
-# DICTIONARY.load(File.open(File.join(File.dirname(__FILE__), '..','..', '..', 'dictionary.txt')))
-
-#  puts DICTIONARY.get_all("FOREST*Y").count
-#  Benchmark.bm do |x|
-#  	x.report { DICTIONARY.get_all "FOREST*Y"}
-#  end

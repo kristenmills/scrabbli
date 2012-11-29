@@ -65,7 +65,7 @@ module Scrabble
 			end
 			[best, best.score]
 		end
-		
+
 		# Finds the best word by adding your letters to other words on the board
 		# 
 		# @param [Player] player the player whose tiles you are using 
@@ -83,33 +83,13 @@ module Scrabble
 			end
 			word_list.each do |word|
 				player.tiles.each do |char|
-					if DICTIONARY.word?(word.word + char)
+					if DICTIONARY.word?(word.word + char) || DICTIONARY.word?(char +word.word)
 						word_hash[char].each do |new_word|
-							ind = (0..new_word.length-1).find_all { |i| new_word[i,1] == char }
-							ind.each do |i|
-								row = word.row
-								col = word.col
-								dir = nil
-								if word.dir == :across
-									row -= i 
-									col += word.word.length 
-									dir = :down
-								else
-									row += word.word.length 
-									col -= i
-									dir = :across
-								end
-								if (0..14).cover?(row) && (0..14).cover?(col)
-									new_score = attempt_score(new_word, board, row, col, dir)
-									hook_score = attempt_score(word.word + char, board, word.row, word.col, word.dir)
-								end
-								if new_score && hook_score
-									if new_score + hook_score > best.inject(0){|sum, i| sum + i.score}
-										best =[ScrabbleWord.new(new_word, new_score, row, col, dir), 
-											ScrabbleWord.new(word.word + char, hook_score, word.row, word.col, word.dir)]
-									end
-								end
-							end
+							row = word.row
+							col = word.col
+						 	word.dir == :across ? col -=1 : row -= 1
+							best  = hook_helper(new_word, word.word.length , word, board, char, word.row , word.col, best, word.word + char) if DICTIONARY.word?(word.word + char)
+							best = hook_helper(new_word, 0 , word, board, char, row, col, best, char + word.word) if DICTIONARY.word?(char + word.word)
 						end
 					end
 				end
@@ -123,6 +103,10 @@ module Scrabble
 		def check_parallel player, board
 		end
 
+		# Place a word on the board
+		# @param [ScrabbleWord] word the word to place
+		# @param [Matrix] board the scrabble board
+		# @param [Player] player the player playing the word
 		def place word, board, player
 			row = word.row
 			col = word.col
@@ -193,7 +177,7 @@ module Scrabble
 					while board[row, temp_col-1].tile 
 						temp_col -= 1
 					end
-					while board[row, temp_col].tile 
+					while board[row, temp_col].tile || col == temp_col
 						if temp_col == col
 							word += tile
 						else
@@ -211,7 +195,7 @@ module Scrabble
 					while board[temp_row-1, col].tile 
 						temp_row -= 1
 					end
-					while board[temp_row, col].tile 
+					while board[temp_row, col].tile  || row == temp_row
 						if temp_row == row
 							word += tile
 						else
@@ -226,7 +210,45 @@ module Scrabble
 			end
 			invalid
 		end
+
+		# A helper method that gets the best for a hook word
+		# 
+		# @param [String] new_word the new word you are trying to place
+		# @param [Integer] ad some adjustment to either row or column depending on direction
+		# @param [ScrabbleWord] word the scrabble word you started with
+		# @param [Matrix] board the scrabble board
+		# @param [String] char the character you are using
+		# @param [Integer] row_1 the starting row of the existing word plus the new character
+		# @param [Integer] col_1 the starting column of the existing word plus the new character
+		# @param [Array] best the current best word
+		# @param [String] adjusted the adjusted word with the new hook later
+		def hook_helper new_word, ad, word, board, char, row_1, col_1, best, adjusted_word
+			ind = (0..new_word.length-1).find_all { |i| new_word[i,1] == char }
+			ind.each do |i|
+				row = row_1
+				col = col_1
+				dir = nil
+				if word.dir == :across
+					row -= i 
+					col += ad
+					dir = :down
+				else
+					row += ad
+					col -= i
+					dir = :across
+				end
+				if (0..14).cover?(row) && (0..14).cover?(col)
+					new_score = attempt_score(new_word, board, row, col, dir)
+					hook_score = attempt_score(adjusted_word, board, row_1, col_1, word.dir)
+				end
+				if new_score && hook_score
+					if new_score + hook_score > best.inject(0){|sum, i| sum + i.score}
+						best =[ScrabbleWord.new(new_word, new_score, row, col, dir), 
+							ScrabbleWord.new(adjusted_word, hook_score, row_1, col_1, word.dir)]
+					end
+				end
+			end
+			best
+		end
 	end
 end
-
-
