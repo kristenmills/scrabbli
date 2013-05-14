@@ -265,6 +265,7 @@ module Scrabble
 		# @param [Integer] col_1 the starting column of the existing word plus the new character
 		# @param [Array] best the current best word
 		# @param [String] adjusted_word the adjusted word with the new hook later
+		# @return the best word
 		def hook_helper new_word, ad, word, board, char, row_1, col_1, best, adjusted_word
 			ind = (0..new_word.length-1).find_all { |i| new_word[i,1] == char }
 			ind.each do |i|
@@ -294,6 +295,17 @@ module Scrabble
 			best
 		end
 
+		# A helper method for getting the best parallel word
+		#
+		# @param [String] new_word the new word you are trying to place
+		# @param [Matrix] board the scrabble board
+		# @param [Integer] row_1 the first row
+		# @param [Integer] row_2 the second row
+		# @param [Integer] col_1 the first col
+		# @param [Integer] col_2 the second col
+		# @param [Symbol] dir the direction
+		# @param [Array] best the array of best words
+		# @return the best word and any smaller words
 		def parallel_helper new_word, board, row_1, row_2, col_1, col_2, dir, best
 			score = attempt_score(new_word, board, row_1, col_1, dir)
 			best = [ScrabbleWord.new(new_word, score, row_1, col_1, dir)]	if score and best[0].score < score
