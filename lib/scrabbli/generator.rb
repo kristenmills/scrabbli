@@ -19,7 +19,7 @@ module Scrabble
 				word.length.times do
 					score = 0
 					if (0..14).cover?(row) && (0..14).cover?(col)
-						score = attempt_score word, board, row, col, :down
+						score = attempt_score(word, board, row, col, :down)[0]
 					end
 					if score and score > best[1]
 						if rand > 0.5
@@ -42,6 +42,7 @@ module Scrabble
 		# @return and array containing the best word and the score you get for the round
 		def check_add_to_existing player, board, word_list
 			best =ScrabbleWord.new('', 0, 0, 0, 0)
+			score = 0
 			word_list.each do |word|
 				list = DICTIONARY.get_all(player.tiles, word.word)
 				list.each do |x|
@@ -55,13 +56,13 @@ module Scrabble
 					end
 					score = 0
 					score = attempt_score(x, board, row, col, word.dir) if (0..14).cover?(row) && (0..14).cover?(col)
-					if score
-						new_word = ScrabbleWord.new(x, score, row, col, word.dir)
-						best = new_word if score > best.score && !Scrabble.same_word(new_word, word)
+					if score[0]
+						new_word = ScrabbleWord.new(x, score[0], row, col, word.dir)
+						best = new_word if score[0] > best.score && !Scrabble.same_word(new_word, word)
 					end
 				end
 			end
-			[best, best.score]
+			[best, score.inject(:+)]
 		end
 
 		# Finds the best word by hooking onto an existing word
@@ -104,7 +105,7 @@ module Scrabble
 		# @param [Array] word_list the list of words already been played
 		# @return and array containing the best word and the score you get for the round
 		def check_parallel player, board, word_list
-			best = [ScrabbleWord.new('',0,0,0,0)]
+			best = [ScrabbleWord.new('',0,0,0,0), 0]
 			words = DICTIONARY.get_all(player.tiles)
 			word_list.each do |played_word|
 				words.each do |new_word|
@@ -131,7 +132,7 @@ module Scrabble
 					end
 				end
 			end
-			[best, best[0].score] #not correct score need to account for smaller words
+			best #not correct score need to account for smaller words
 		end
 
 		# Finds the best word by playing words perpendicular to an exisitng word
@@ -180,8 +181,12 @@ module Scrabble
 		def attempt_score word, board, row, col, dir
 			sum =0
 			multiplier = 1
+			more_sum = 0
+			extra_words = [word]
 			word.each_char do  |char|
-				return false if invalid(board, char, row, col, dir) || !(0..14).cover?(col) || !(0..14).cover?(row)
+				invalid = invalid(board, char, row, col, dir)
+				return [false, 0] if invalid[0] || !(0..14).cover?(col) || !(0..14).cover?(row)
+				extra_words << invalid[1] if invalid[1] != ''
 				if !board[row,col].multiplied
 					val = TILE_VALUE[char]
 					val ||= 0
@@ -200,8 +205,10 @@ module Scrabble
 				else
 					col += 1
 				end
+				invalid[1].each_char {|x| more_sum += TILE_VALUE[x] }
 			end
-			sum*multiplier
+			return [false, 0] if extra_words.uniq.count != extra_words.count
+			[sum*multiplier, more_sum]
 		end
 
 		# Checks if a given tile is invlaid
@@ -229,7 +236,8 @@ module Scrabble
 						temp_col+=1
 					end
 					if !DICTIONARY.word?(word)
-						invalid = true
+						invalid = true,
+						word = ''
 					end
 				end
 			else
@@ -248,10 +256,11 @@ module Scrabble
 					end
 					if !DICTIONARY.word?(word)
 						invalid = true
+						word = ''
 					end
 				end
 			end
-			invalid
+			[invalid, word]
 		end
 
 		# A helper method that gets the best for a hook word
@@ -281,14 +290,16 @@ module Scrabble
 					col -= i
 					dir = :across
 				end
+				new_score = [false, 0]
+				hook_score = [false, 0]
 				if (0..14).cover?(row) && (0..14).cover?(col)
 					new_score = attempt_score(new_word, board, row, col, dir)
 					hook_score = attempt_score(adjusted_word, board, row_1, col_1, word.dir)
 				end
-				if new_score && hook_score
-					if new_score + hook_score > best.inject(0){|sum, i| sum + i.score}
-						best =[ScrabbleWord.new(new_word, new_score, row, col, dir), 
-							ScrabbleWord.new(adjusted_word, hook_score, row_1, col_1, word.dir)]
+				if new_score[0] && hook_score[0]
+					if new_score[0] + hook_score[0] > best.inject(0){|sum, i| sum + i.score}
+						best =[ScrabbleWord.new(new_word, new_score[0], row, col, dir),
+							ScrabbleWord.new(adjusted_word, hook_score[0], row_1, col_1, word.dir)]
 					end
 				end
 			end
@@ -308,9 +319,11 @@ module Scrabble
 		# @return the best word and any smaller words
 		def parallel_helper new_word, board, row_1, row_2, col_1, col_2, dir, best
 			score = attempt_score(new_word, board, row_1, col_1, dir)
-			best = [ScrabbleWord.new(new_word, score, row_1, col_1, dir)]	if score and best[0].score < score
+			if score[0] and best[0].score < score[0] + score[1]
+				best = [ScrabbleWord.new(new_word, score[0], row_1, col_1, dir), score[0] + score[1]]
+			end
 			score = attempt_score(new_word, board, row_2, col_2, dir)
-			best = [ScrabbleWord.new(new_word, score, row_2, col_2, dir)]	if score and best[0].score < score
+			best = [ScrabbleWord.new(new_word, score[0], row_2, col_2, dir), score[0] + score[1]]	if score[0] and best[0].score < score[0] + score[1]
 			best
 		end
 	end
