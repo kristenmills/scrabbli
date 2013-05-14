@@ -98,7 +98,6 @@ module Scrabble
 		end
 
 		# Finds the best word by playing words parallel to existing words
-		# TODO: Fix scoring so it adds the smaller words
 		#
 		# @param [Player] player the player whose tiles you are using
 		# @param [Matrix] board the scrabble board matrix
@@ -132,7 +131,7 @@ module Scrabble
 					end
 				end
 			end
-			best #not correct score need to account for smaller words
+			best
 		end
 
 		# Finds the best word by playing words perpendicular to an exisitng word
