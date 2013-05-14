@@ -60,8 +60,9 @@ module Trie
 		# @param [String] required a string of characters that must  be included 
 		# @return a set of all possible words
 		def get_all word, required = ''
-			word << required.split(//) unless required == ''
-			get_all_recursive @root, word, '', required
+			new_word = word.dup
+			new_word << required.split(//) unless required == ''
+			get_all_recursive @root, new_word, '', required
 		end
 
 		# Recursive get's all anagrams of words

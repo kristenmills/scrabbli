@@ -72,6 +72,7 @@ module Scrabble
 		# @param [Array] word_list the list of words already been played
 		# @return and array containing the best word and the score you get for the round
 		def check_hooking player, board, word_list
+			puts player.tiles.length
 			best =Array.new(2, ScrabbleWord.new('', 0, 0, 0, 0))
 			words = DICTIONARY.get_all(player.tiles)
 			word_hash = Hash.new
@@ -83,7 +84,9 @@ module Scrabble
 			end
 			word_list.each do |word|
 				player.tiles.each do |char|
-					if DICTIONARY.word?(word.word + char) || DICTIONARY.word?(char +word.word)
+					puts char.class
+					puts char
+					if DICTIONARY.word?(word.word + char) || DICTIONARY.word?(char + word.word)
 						word_hash[char].each do |new_word|
 							row = word.row
 							col = word.col

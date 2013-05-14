@@ -6,7 +6,7 @@ module Scrabble
 		attr_accessor :board, :players, :word_list
 
 		# Initializes a Scrabble Game
-		def initialize 
+		def initialize
 			@board = Matrix.build(15){BoardSquare.new}
 			setup_board
 			@players = Array.new
@@ -14,7 +14,7 @@ module Scrabble
 		end
 
 		# Adds a Player to the game
-		# 
+		#
 		# @param [Player] player the player to add to the game
 		def add_player player
 			@players << player
@@ -53,6 +53,43 @@ module Scrabble
 					end
 				end
 			end
+		end
+
+		# def add word
+		# 	@word_list << word
+		# end
+
+		def play_word
+			best_word = ScrabbleWord.new('',0, 0, 0, 0)
+			best_score = 0
+			if @word_list.empty?
+				word  = Generator::first_word @players[0], @board
+				best_word = word[0]
+				best_score = word[1]
+			else
+				word = Generator::check_add_to_existing(@players[0], @board, @word_list)
+				if word[1] > best_score
+					best_word = word[0]
+					best_score = word[1]
+				end
+				word = Generator::check_hooking(@players[0], @board, @word_list)
+				if word[1] > best_score
+					best_word = word[0]
+					best_score = word[1]
+				end
+				word = Generator::check_parallel(@players[0], @board, @word_list)
+				if word[1] > best_score
+					best_word = word[0]
+					best_score = word[1]
+				end
+				word = Generator::check_perpendicular(@players[0], @board, @word_list)
+				if word[1] > best_score
+					best_word = word[0]
+					best_score = word[1]
+				end
+			end
+			@word_list << best_word if best_word.word != ''
+			Generator::place(best_word, @board, @players[0])
 		end
 	end
 end

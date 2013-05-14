@@ -114,7 +114,7 @@ module Scrabble
 					Helpers::normal_menu "Enter a letter to add to your hand"
 					letter = gets.chomp.upcase
 				end
-				@player.tiles << letter.chomp
+				@player.tiles.concat(letter.split(/ /))
 			else
 				Helpers::alert_menu("You already have 7 tiles.")
 				gets
@@ -149,7 +149,33 @@ module Scrabble
 
 		#start the game
 		def start_game
-			Helpers::draw_board @game
+			option = 0
+			relevant = true
+			while relevant do
+				attempted = false
+				until (1..6).cover?(option) do
+					Helpers::invalid_option if attempted
+					Helpers::draw_board @game
+					Helpers::normal_menu "What do you want to do?", "Generate Move", "Add Tiles to Hand", "Add Word", "Add existing words", "Display Word List", "End Game"
+					option = gets.chomp.to_i
+				end
+				case option
+				when 1
+					@game.play_word
+				when 2
+					set_tiles
+				when 3
+					add_word
+				when 4
+					add_existing_words
+				when 5
+					puts @game.word_list.to_a
+				when 6
+					relevant = false
+				end
+				option = 0
+			end
 		end
+
 	end
 end
