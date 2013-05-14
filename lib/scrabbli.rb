@@ -19,7 +19,7 @@ require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli_helpers')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli')
 
 Scrabble::CLI.run
-
+#
 # game = Scrabble::Game.new
 
 # player = Scrabble::Player.new('Kristen',"AFTERAKDJASDRAZEBET".split(//))

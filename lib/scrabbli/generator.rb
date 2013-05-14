@@ -153,16 +153,18 @@ module Scrabble
 		# @param [ScrabbleWord] word the word to place
 		# @param [Matrix] board the scrabble board
 		# @param [Player] player the player playing the word
-		def place word, board, player
+		def place word, board, player, remove_player_tile
 			row = word.row
 			col = word.col
 			word.word.each_char do |char|
 				if !board[row,col].multiplied
 					board[row,col].tile = char
 					board[row,col].multiplied = true
-					index = player.tiles.index(char)
-					index ||= player.tiles.index('*')
-					player.tiles.delete_at(index)
+					if remove_player_tile
+						index = player.tiles.index(char)
+						index ||= player.tiles.index('*')
+						player.tiles.delete_at(index)
+					end
 				end
 				if word.dir == :down
 					row += 1

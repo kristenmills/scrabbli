@@ -89,7 +89,7 @@ module Scrabble
 				end
 			end
 			@word_list << best_word if best_word.word != ''
-			Generator::place(best_word, @board, @players[0])
+			Generator::place(best_word, @board, @players[0], true)
 		end
 	end
 end

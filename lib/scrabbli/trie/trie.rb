@@ -95,7 +95,6 @@ module Trie
 				char_array.each do |x|
 					next unless nn = n.walk(x.uncolorize)
 					set << (prefix_more + x) if (nn.terminal && (prefix_more + x).include?(required))
-				
 					set += get_all_recursive(nn ,s, prefix_more + x, required )
 				end
 			end

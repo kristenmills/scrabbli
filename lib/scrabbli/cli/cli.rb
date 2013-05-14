@@ -177,5 +177,14 @@ module Scrabble
 			end
 		end
 
+		# Adds a word played by another player to the board
+		def add_word
+			things = []
+			until things.count == 4 do
+				Helpers::normal_menu "Specify Word direction row and column"
+				things = gets.chomp.split(/ /)
+			end
+			Generator::place(ScrabbleWord.new(things[0],0, things[2].to_i, things[3].to_i, things[1].to_sym),@game.board, @player, false)
+		end
 	end
 end

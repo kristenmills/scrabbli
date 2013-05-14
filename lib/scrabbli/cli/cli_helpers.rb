@@ -22,12 +22,16 @@ module Scrabble
 			# @param [Game] game a Game object
 			def draw_board game
 				string = ''
+				print " "
+				0.upto(14) do |x|
+					print "%5s" % [x.to_s]
+				end
 				game.board.each_with_index do |square, row, column|
 					anti_string = square.tile
 					anti_string ||= ' '
 					if column == 0
 						puts string
-						string =''
+						string = "%-3s" % [row.to_s]
 					end
 					case square.multiplier
 					when 3
