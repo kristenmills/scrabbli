@@ -22,6 +22,9 @@ module Trie
 			node.terminal = true
 		end
 
+		# Deletes a word from the trie
+		#
+		# @param [String] word the word to delete
 		def delete word
 			node = @root
 			word.each_char do |c|

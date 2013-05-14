@@ -23,7 +23,7 @@ module Trie
 
 		# Is this node a leaf node
 		#
-		# @returns true if yes false if no
+		# @return true if yes false if no
 		def leaf?
 			@children.count == 0
 		end

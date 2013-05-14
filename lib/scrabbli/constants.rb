@@ -3,10 +3,10 @@ module Scrabble
 	extend self
 	#The hash of letters to point value
 	TILE_VALUE = {
-		"A" => 1 , 
- 		"B" => 3 , 
- 		"C" => 3 , 
- 		"D" => 2 , 
+		"A" => 1 ,
+ 		"B" => 3 ,
+ 		"C" => 3 ,
+ 		"D" => 2 ,
  		"E" => 1 ,
  		"F" => 4 ,
  		"G" => 2 ,
@@ -39,6 +39,11 @@ module Scrabble
 	#A wrapper around scrabble words
 	ScrabbleWord = Struct.new(:word, :score, :row, :col, :dir)
 
+	# Are these two words the same?
+	#
+	# @param [ScrabbleWord] word1 a scrabble word struct
+	# @param [ScrabbleWord] word2 a scrabble word struct
+	# @return true if yes false if no
 	def same_word word1, word2
 		word2.word != word1.word && word2.row != word1.row && word2.col != word1.col && word2.dir != word1.dir
 	end

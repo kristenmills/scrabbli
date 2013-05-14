@@ -97,13 +97,14 @@ module Scrabble
 		end
 
 		# Finds the best word by playing words parallel to existing words
+		# TODO: Fix scoring so it adds the smaller words
 		#
 		# @param [Player] player the player whose tiles you are using
 		# @param [Matrix] board the scrabble board matrix
 		# @param [Array] word_list the list of words already been played
 		# @return and array containing the best word and the score you get for the round
 		def check_parallel player, board, word_list
-			best = ScrabbleWord.new('',0,0,0,0)
+			best = [ScrabbleWord.new('',0,0,0,0)]
 			words = DICTIONARY.get_all(player.tiles)
 			word_list.each do |played_word|
 				words.each do |new_word|
@@ -115,10 +116,7 @@ module Scrabble
 						col_2 = played_word.length + 2*new_word.length - 2
 						col_2 = (0..14).cover?(col_2) ? col_2 : 14
 						col_1.upto(col_2) do |col|
-							score = attempt_score(new_word, board, row_1, col, :across)
-							best = ScrabbleWord.new(new_word, score, row_1, col, :across)	if score and best.score < score
-							score = attempt_score(new_word, board, row_2, col, :across)
-							best = ScrabbleWord.new(new_word, score, row_2, col, :across)	if score and best.score < score
+							best = parallel_helper(new_word, board, row_1, row_2, col, col, :across, best)
 						end
 					else
 						col_1 = played_word.col-1
@@ -128,21 +126,27 @@ module Scrabble
 						row_2 = played_word.length + 2*new_word.length - 2
 						row_2 = (0..14).cover?(row_2) ? row_2 : 14
 						row_1.upto(row_2) do |row|
-							score = attempt_score(new_word, board, row, col_1, :down)
-							best = ScrabbleWord.new(new_word, score, row, col_1, :down)	if score and best.score < score
-							score = attempt_score(new_word, board, row, col_2, :down)
-							best = ScrabbleWord.new(new_word, score, row, col_2, :down)	if score and best.score < score
+							best = parallel_helper(new_word, board, row, row, col_1, col_2, :down, best)
 						end
 					end
 				end
 			end
-			[best, best.score] #not correct score need to account for smaller words
+			[best, best[0].score] #not correct score need to account for smaller words
 		end
 
+		# Finds the best word by playing words perpendicular to an exisitng word
+		#
+		# @param [Player] player the player whose tiles you are using
+		# @param [Matrix] board the scrabble board matrix
+		# @param [Array] word_list the list of words already been played
+		# @return and array containing the best word and the score you get for the round
 		def check_perpendicular player, board, word_list
+			best = ScrabbleWord.new('', 0, 0, 0, 0)
+
 		end
 
 		# Place a word on the board
+		#
 		# @param [ScrabbleWord] word the word to place
 		# @param [Matrix] board the scrabble board
 		# @param [Player] player the player playing the word
@@ -260,7 +264,7 @@ module Scrabble
 		# @param [Integer] row_1 the starting row of the existing word plus the new character
 		# @param [Integer] col_1 the starting column of the existing word plus the new character
 		# @param [Array] best the current best word
-		# @param [String] adjusted the adjusted word with the new hook later
+		# @param [String] adjusted_word the adjusted word with the new hook later
 		def hook_helper new_word, ad, word, board, char, row_1, col_1, best, adjusted_word
 			ind = (0..new_word.length-1).find_all { |i| new_word[i,1] == char }
 			ind.each do |i|
@@ -287,6 +291,14 @@ module Scrabble
 					end
 				end
 			end
+			best
+		end
+
+		def parallel_helper new_word, board, row_1, row_2, col_1, col_2, dir, best
+			score = attempt_score(new_word, board, row_1, col_1, dir)
+			best = [ScrabbleWord.new(new_word, score, row_1, col_1, dir)]	if score and best[0].score < score
+			score = attempt_score(new_word, board, row_2, col_2, dir)
+			best = [ScrabbleWord.new(new_word, score, row_2, col_2, dir)]	if score and best[0].score < score
 			best
 		end
 	end
