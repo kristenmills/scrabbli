@@ -10,11 +10,11 @@ module Scrabble
 			option =0
 			attempted = false
 			Helpers::header
-			until (1..2).cover?(option) do 
+			until (1..2).cover?(option) do
 				Helpers::invalid_option if attempted
 				attempted = true
 				Helpers::normal_menu "What would you like to do?", "New Game", "Exit"
-				option = gets.chomp.to_i 
+				option = gets.chomp.to_i
 			end
 			case option
 			when 1
@@ -40,9 +40,9 @@ module Scrabble
 		def game_setup_menu
 			option = 0
 			relevant = true
-			while relevant do 
+			while relevant do
 				attempted = false
-				until (1..4).cover?(option) do 
+				until (1..4).cover?(option) do
 					Helpers::invalid_option if attempted
 					attempted = true
 					Helpers::normal_menu "Hello, " + @player.name + "! What would you like to do?", "Add Player", "Set Tiles", "Start Game", "Exit"
@@ -81,9 +81,9 @@ module Scrabble
 		def set_tiles
 			option = 0
 			relevant = true
-			while relevant do 
+			while relevant do
 				attempted = false
-				until (1..4).cover?(option) do 
+				until (1..4).cover?(option) do
 					Helpers::invalid_option if attempted
 					attempted = true
 					Helpers::normal_menu "Tiles: #{@player.pp_tiles}. What do you want to do?", "Add Tile", "Remove Tile", "Reset Hand", "Return To Menu"
@@ -108,7 +108,7 @@ module Scrabble
 			if(@player.tiles.count < 7)
 				letter = 0
 				attempted = false
-				until ('A'..'Z').cover?(letter) || letter == '*' do 
+				until ('A'..'Z').cover?(letter) || letter == '*' do
 					Helpers::invalid_option if attempted
 					attempted = true
 					Helpers::normal_menu "Enter a letter to add to your hand"
@@ -126,7 +126,7 @@ module Scrabble
 			if(@player.tiles.count != 0)
 				letter = ''
 				attempted = false
-				until @player.tiles.include?(letter) do 
+				until @player.tiles.include?(letter) do
 					Helpers::invalid_option if attempted
 					attempted = true
 					Helpers::normal_menu "Which tile do you want to remove?"
@@ -149,8 +149,7 @@ module Scrabble
 
 		#start the game
 		def start_game
-			puts "start game"
+			Helpers::draw_board @game
 		end
 	end
 end
-	

@@ -16,27 +16,29 @@ require File.join(File.dirname(__FILE__), 'scrabbli', 'generator')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'player')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'game')
 require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli_helpers')
-require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli') 
+require File.join(File.dirname(__FILE__), 'scrabbli', 'cli', 'cli')
 
-# Scrabble::CLI.run 
+# Scrabble::CLI.run
 
 game = Scrabble::Game.new
 
-player = Scrabble::Player.new('Kristen',"AFTERAFKDJASDBET".split(//))
+player = Scrabble::Player.new('Kristen',"AFTERAKDJASDRAZEBET".split(//))
 
 # puts Scrabble::DICTIONARY.get_all("REGAL**Y".split(//)).to_a.count
 # Benchmark.bm do |x|
-# 	x.report {Scrabble::DICTIONARY.get_all("REGALITY".split(//))}
+# 	x.report {Scrabble::DICTIONARY.get_all("REGAL**Y".split(//))}
 # end
 
-# puts Scrabble::Generator.first_word player, game.board
-word = Scrabble::ScrabbleWord.new("AFTER", 20, 7, 7, :across)
+# puts Scrabble::DICTIONARY.get_all("*sn".split(//), "RO").to_a
+# 
+puts Scrabble::Generator.first_word player, game.board
+word = Scrabble::ScrabbleWord.new("BREAKFAST", 132, 7, 6, :across)
 game.word_list << word
 Scrabble::Generator.place word, game.board, player
-# puts Scrabble::Generator.attempt_score "SNACKS", game.board, word.row, 14, :down
-val = Scrabble::Generator.check_hooking(player, game.board, game.word_list)
+# # puts Scrabble::Generator.attempt_score "SNACKS", game.board, word.row, 14, :down
+val = Scrabble::Generator.check_parallel(player, game.board, game.word_list)
 puts val
-Scrabble::Generator.place(val[0][0], game.board, player)
+Scrabble::Generator.place(val[0], game.board, player)
 Scrabble::CLI::Helpers::draw_board game
 
 # puts Scrabble::Generator.check_add_to_existing player, game.board, game.word_list

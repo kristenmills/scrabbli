@@ -21,6 +21,9 @@ module Trie
 			@children[char]
 		end
 
+		# Is this node a leaf node
+		#
+		# @returns true if yes false if no
 		def leaf?
 			@children.count == 0
 		end

@@ -7,20 +7,21 @@ module Scrabble
 
 		# Finds the first word  that you should play
 		#
-		# @param [Player] player the player whose tiles you are using 
+		# @param [Player] player the player whose tiles you are using
 		# @param [Matrix] board the scrabble board matrix
+		# @return and array containing the best word and the score you get for the round
 		def first_word player, board
 			words = DICTIONARY.get_all(player.tiles)
 			best = ScrabbleWord.new('', 0, 0 ,0, :down)
-			words.each do |word| 
+			words.each do |word|
 				row = board.row_size/2
 				col = board.row_size/2
-				word.length.times do 
+				word.length.times do
 					score = 0
 					if (0..14).cover?(row) && (0..14).cover?(col)
 						score = attempt_score word, board, row, col, :down
 					end
-					if score > best[1]
+					if score and score > best[1]
 						if rand > 0.5
 							best = ScrabbleWord.new(word, score, row, col, :down)
 						else
@@ -34,10 +35,11 @@ module Scrabble
 		end
 
 		# Finds the best word by adding your letters to other words on the board
-		# 
-		# @param [Player] player the player whose tiles you are using 
+		#
+		# @param [Player] player the player whose tiles you are using
 		# @param [Matrix] board the scrabble board matrix
 		# @param [Array] word_list the list of words already been played
+		# @return and array containing the best word and the score you get for the round
 		def check_add_to_existing player, board, word_list
 			best =ScrabbleWord.new('', 0, 0, 0, 0)
 			word_list.each do |word|
@@ -52,25 +54,22 @@ module Scrabble
 						col -= val
 					end
 					score = 0
-					if (0..14).cover?(row) && (0..14).cover?(col)
-						score = attempt_score(x, board, row, col, word.dir)
-					end
+					score = attempt_score(x, board, row, col, word.dir) if (0..14).cover?(row) && (0..14).cover?(col)
 					if score
 						new_word = ScrabbleWord.new(x, score, row, col, word.dir)
-						if score > best.score && !Scrabble.same_word(new_word, word)
-							best = new_word
-						end
+						best = new_word if score > best.score && !Scrabble.same_word(new_word, word)
 					end
 				end
 			end
 			[best, best.score]
 		end
 
-		# Finds the best word by adding your letters to other words on the board
-		# 
-		# @param [Player] player the player whose tiles you are using 
+		# Finds the best word by hooking onto an existing word
+		#
+		# @param [Player] player the player whose tiles you are using
 		# @param [Matrix] board the scrabble board matrix
 		# @param [Array] word_list the list of words already been played
+		# @return and array containing the best word and the score you get for the round
 		def check_hooking player, board, word_list
 			best =Array.new(2, ScrabbleWord.new('', 0, 0, 0, 0))
 			words = DICTIONARY.get_all(player.tiles)
@@ -97,10 +96,50 @@ module Scrabble
 		[best, best.inject(0){|sum, i| sum + i.score}]
 		end
 
-		def check_perpendicular player, board
+		# Finds the best word by playing words parallel to existing words
+		#
+		# @param [Player] player the player whose tiles you are using
+		# @param [Matrix] board the scrabble board matrix
+		# @param [Array] word_list the list of words already been played
+		# @return and array containing the best word and the score you get for the round
+		def check_parallel player, board, word_list
+			best = ScrabbleWord.new('',0,0,0,0)
+			words = DICTIONARY.get_all(player.tiles)
+			word_list.each do |played_word|
+				words.each do |new_word|
+					if played_word.dir == :across
+						row_1 = played_word.row-1
+						row_2 = played_word.row+1
+						col_1 = played_word.col - new_word.length + 1
+						col_1 = col_1 >= 0 ? col_1 : 0
+						col_2 = played_word.length + 2*new_word.length - 2
+						col_2 = (0..14).cover?(col_2) ? col_2 : 14
+						col_1.upto(col_2) do |col|
+							score = attempt_score(new_word, board, row_1, col, :across)
+							best = ScrabbleWord.new(new_word, score, row_1, col, :across)	if score and best.score < score
+							score = attempt_score(new_word, board, row_2, col, :across)
+							best = ScrabbleWord.new(new_word, score, row_2, col, :across)	if score and best.score < score
+						end
+					else
+						col_1 = played_word.col-1
+						col_2 = played_word.col+1
+						row_1 = played_word.row - new_word.length + 1
+						row_1 = row_1 >= 0 ? row_1 : 0
+						row_2 = played_word.length + 2*new_word.length - 2
+						row_2 = (0..14).cover?(row_2) ? row_2 : 14
+						row_1.upto(row_2) do |row|
+							score = attempt_score(new_word, board, row, col_1, :down)
+							best = ScrabbleWord.new(new_word, score, row, col_1, :down)	if score and best.score < score
+							score = attempt_score(new_word, board, row, col_2, :down)
+							best = ScrabbleWord.new(new_word, score, row, col_2, :down)	if score and best.score < score
+						end
+					end
+				end
+			end
+			[best, best.score] #not correct score need to account for smaller words
 		end
 
-		def check_parallel player, board
+		def check_perpendicular player, board, word_list
 		end
 
 		# Place a word on the board
@@ -126,20 +165,20 @@ module Scrabble
 			end
 		end
 
-		# Attempts to place a tile on the board
+		# Attempts to place a word on the board
 		#
 		# @param [String] word the word you are attempting to place
 		# @param [Matrix] board the scrabble board
 		# @param [Integer] row the row you want to start at
 		# @param [Integer] col the column you want to start at
-		# @param [Symbol]	dir the direction (:down or :across) that you are building in 
-		# @return the score of the word or 0 if it can't be placed
+		# @param [Symbol]	dir the direction (:down or :across) that you are building in
+		# @return the score of the word or false if it can't be placed
 		def attempt_score word, board, row, col, dir
 			sum =0
 			multiplier = 1
 			word.each_char do  |char|
 				return false if invalid(board, char, row, col, dir) || !(0..14).cover?(col) || !(0..14).cover?(row)
-				if !board[row,col].multiplied 
+				if !board[row,col].multiplied
 					val = TILE_VALUE[char]
 					val ||= 0
 					if board[row,col].type == :word
@@ -162,7 +201,7 @@ module Scrabble
 		end
 
 		# Checks if a given tile is invlaid
-		# 
+		#
 		# @param [Matrix] board the scrabble board
 		# @param [String] tile the tile trying to be placed
 		# @param [Integer] row the row you are trying to place a tile in
@@ -172,9 +211,9 @@ module Scrabble
 			invalid = false
 			word = ''
 			if dir == :down
-				if (!board[row, col-1].nil? && board[row, col-1].tile) || (!board[row, col+1].nil? && board[row, col+1].tile) 
+				if (!board[row, col-1].nil? && board[row, col-1].tile) || (!board[row, col+1].nil? && board[row, col+1].tile)
 					temp_col = col
-					while board[row, temp_col-1].tile 
+					while board[row, temp_col-1].tile
 						temp_col -= 1
 					end
 					while board[row, temp_col].tile || col == temp_col
@@ -190,9 +229,9 @@ module Scrabble
 					end
 				end
 			else
-				if(board[row-1, col].nil? && board[row-1, col].tile) || (board[row+1, col].nil? && board[row+1, col].tile)
+				if(!board[row-1, col].nil? && board[row-1, col].tile) || (!board[row+1, col].nil? && board[row+1, col].tile)
 					temp_row = row
-					while board[temp_row-1, col].tile 
+					while board[temp_row-1, col].tile
 						temp_row -= 1
 					end
 					while board[temp_row, col].tile  || row == temp_row
@@ -200,7 +239,7 @@ module Scrabble
 							word += tile
 						else
 							word += board[temp_row, col].tile
-						end		
+						end
 						temp_row+=1
 					end
 					if !DICTIONARY.word?(word)
@@ -212,7 +251,7 @@ module Scrabble
 		end
 
 		# A helper method that gets the best for a hook word
-		# 
+		#
 		# @param [String] new_word the new word you are trying to place
 		# @param [Integer] ad some adjustment to either row or column depending on direction
 		# @param [ScrabbleWord] word the scrabble word you started with
@@ -229,7 +268,7 @@ module Scrabble
 				col = col_1
 				dir = nil
 				if word.dir == :across
-					row -= i 
+					row -= i
 					col += ad
 					dir = :down
 				else
