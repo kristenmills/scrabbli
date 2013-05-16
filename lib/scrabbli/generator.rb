@@ -72,7 +72,6 @@ module Scrabble
 		# @param [Array] word_list the list of words already been played
 		# @return and array containing the best word and the score you get for the round
 		def check_hooking player, board, word_list
-			puts player.tiles.length
 			best =Array.new(2, ScrabbleWord.new('', 0, 0, 0, 0))
 			words = DICTIONARY.get_all(player.tiles)
 			word_hash = Hash.new
@@ -84,8 +83,6 @@ module Scrabble
 			end
 			word_list.each do |word|
 				player.tiles.each do |char|
-					puts char.class
-					puts char
 					if DICTIONARY.word?(word.word + char) || DICTIONARY.word?(char + word.word)
 						word_hash[char].each do |new_word|
 							row = word.row
@@ -144,8 +141,33 @@ module Scrabble
 		# @param [Array] word_list the list of words already been played
 		# @return and array containing the best word and the score you get for the round
 		def check_perpendicular player, board, word_list
-			best = ScrabbleWord.new('', 0, 0, 0, 0)
-
+			best = [ScrabbleWord.new('', 0, 0, 0, 0), 0]
+			hash = Hash.new
+			word_list.to_a.flatten.join.split(//).uniq.each do |char|
+				hash[char] = DICTIONARY.get_all(player.tiles, char)
+			end
+			word_list.each do |word|
+				word.word.split(//).each_with_index do |char, i|
+					words = hash[char]
+					words.each do|new_word|
+						intersect = new_word.index(char)
+						if word.dir == :across
+							col = word.col + i
+							row = word.row - intersect
+							dir = :down
+						else
+							col = word.col - intersect
+							row = word.row + i
+							dir = :across
+						end
+						score = attempt_score(new_word, board, row, col, dir) if (0..14).cover?(row) && (0..14).cover?(col)
+						if score[0]
+							best = [ScrabbleWord.new(new_word, score[0], row, col, dir), score[0] + score[1]] if best[1] < (score[0] + score[1])
+						end
+					end
+				end
+			end
+			best
 		end
 
 		# Place a word on the board
@@ -153,6 +175,7 @@ module Scrabble
 		# @param [ScrabbleWord] word the word to place
 		# @param [Matrix] board the scrabble board
 		# @param [Player] player the player playing the word
+		# @param [Boolean] remove_player_tile should it remove the tile from the player tiles
 		def place word, board, player, remove_player_tile
 			row = word.row
 			col = word.col
@@ -187,7 +210,7 @@ module Scrabble
 			multiplier = 1
 			more_sum = 0
 			extra_words = [word]
-			word.each_char do  |char|
+			word.each_char do |char|
 				invalid = invalid(board, char, row, col, dir)
 				return [false, 0] if invalid[0] || !(0..14).cover?(col) || !(0..14).cover?(row)
 				extra_words << invalid[1] if invalid[1] != ''
@@ -231,7 +254,7 @@ module Scrabble
 					while board[row, temp_col-1].tile
 						temp_col -= 1
 					end
-					while board[row, temp_col].tile || col == temp_col
+					while temp_col < 15 &&(board[row, temp_col].tile || col == temp_col)
 						if temp_col == col
 							word += tile
 						else
@@ -250,7 +273,7 @@ module Scrabble
 					while board[temp_row-1, col].tile
 						temp_row -= 1
 					end
-					while board[temp_row, col].tile  || row == temp_row
+					while temp_row < 15 &&(board[temp_row, col].tile  || row == temp_row)
 						if temp_row == row
 							word += tile
 						else
